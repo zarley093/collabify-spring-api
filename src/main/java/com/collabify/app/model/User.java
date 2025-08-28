@@ -33,11 +33,4 @@ public class User {
   public void setUsername(String username2) {
     this.username = username2;
   }
-
-  // public void setUsername(String username2) {
-  //   this.username = username2;
-  // }
-  // public void setEmail(String email2) {
-  //   this.email = email2;
-  // }
 }
