@@ -1,5 +1,6 @@
 package com.collabify.app;
 
+// Note: REST endpoints ("/" and "/hello") coexist with GraphQL; they don't interfere with GraphQL setup.
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RestController;

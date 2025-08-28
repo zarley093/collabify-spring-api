@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.collabify.app.dto.UserDto;
 import com.collabify.app.model.User;
 import com.collabify.app.repository.UserRepository;
-import com.collabify.dto.UserDto;
 
 import graphql.com.google.common.base.Optional;
 
@@ -16,23 +16,23 @@ public class UserService {
   @Autowired
   private UserRepository userRepository;
 
-  public List<User> listUsers() {
+  public List<UserDto> listUsers() {
     return userRepository.findAll();
   }
 
-  public User createUser(User user) {
+  public UserDto createUser(UserDto user) {
     return userRepository.save(user);
   }
 
-  public User getUserById(Long id) {
+  public UserDto getUserById(Long id) {
     return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Data not found!"));
   }
 
-  public User updateUser(Long id, User data) {
-    User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Data not found!"));
+  public UserDto updateUser(Long id, UserDto data) {
+    UserDto user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Data not found!"));
     System.out.println("updateings");
-    user.setUsername(data.username);
-    user.setEmail(data.email);
+    user.username = data.username;
+    user.email = data.email;
     return userRepository.save(user);
   }
 
@@ -46,7 +46,7 @@ public class UserService {
 
 
 
-  public Optional<User> findByEmail(String email) {
+  public Optional<UserDto> findByEmail(String email) {
     return userRepository.findByEmail(email);
   }
 
