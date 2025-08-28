@@ -33,14 +33,14 @@ public class UserController {
   private UserService userService;
 
   @GetMapping("/")
-  public List<UserDto> getUsers() {
+  public List<User> getUsers() {
       return userService.listUsers();
   }
   
 
   @GetMapping("/{id}")
-  public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
-      UserDto user = userService.getUserById(id);
+  public ResponseEntity<User> getUser(@PathVariable Long id) {
+      User user = userService.getUserById(id);
       if (user != null) {
         return ResponseEntity.ok(user);
       } else {
@@ -49,16 +49,16 @@ public class UserController {
   }
   
   @PostMapping("/create")
-  public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto data) {
+  public ResponseEntity<User> createUser(@Valid @RequestBody User data) {
     System.out.print("create wip" + data.username + data.email);
-    UserDto created = userService.createUser(data);
+    User created = userService.createUser(data);
     return ResponseEntity.status(201).body(created).ok(data);
   }
 
   @PutMapping("/update/{id}")
-  public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto data) {
+  public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User data) {
     System.out.println("asd" + id + data);
-    UserDto updatedUser = userService.updateUser(id,data);
+    User updatedUser = userService.updateUser(id,data);
     return ResponseEntity.status(201).body(updatedUser).ok(data);
   }
 

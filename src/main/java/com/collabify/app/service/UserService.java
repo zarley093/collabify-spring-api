@@ -9,27 +9,27 @@ import com.collabify.app.dto.UserDto;
 import com.collabify.app.model.User;
 import com.collabify.app.repository.UserRepository;
 
-import graphql.com.google.common.base.Optional;
-
+// import graphql.com.google.common.base.Optional;
+import java.util.Optional;
 @Service
 public class UserService {
   @Autowired
   private UserRepository userRepository;
 
-  public List<UserDto> listUsers() {
+  public List<User> listUsers() {
     return userRepository.findAll();
   }
 
-  public UserDto createUser(UserDto user) {
+  public User createUser(User user) {
     return userRepository.save(user);
   }
 
-  public UserDto getUserById(Long id) {
+  public User getUserById(Long id) {
     return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Data not found!"));
   }
 
-  public UserDto updateUser(Long id, UserDto data) {
-    UserDto user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Data not found!"));
+  public User updateUser(Long id, User data) {
+    User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Data not found!"));
     System.out.println("updateings");
     user.username = data.username;
     user.email = data.email;
@@ -46,7 +46,7 @@ public class UserService {
 
 
 
-  public Optional<UserDto> findByEmail(String email) {
+  public Optional<User> findByEmail(String email) {
     return userRepository.findByEmail(email);
   }
 

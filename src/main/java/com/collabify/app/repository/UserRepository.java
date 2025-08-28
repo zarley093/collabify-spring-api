@@ -5,9 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import com.collabify.app.dto.UserDto;
 import com.collabify.app.model.User;
-import graphql.com.google.common.base.Optional;
+// import graphql.com.google.common.base.Optional;
+import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserDto, Long> {
-  Optional<UserDto> findByEmail(String email);
+public interface UserRepository extends JpaRepository<User, Long> {
+  Optional<User> findByEmail(String email);
 }

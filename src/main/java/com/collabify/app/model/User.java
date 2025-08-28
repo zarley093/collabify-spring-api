@@ -18,6 +18,22 @@ public class User {
   @NotNull
   public String email;
 
+  public String getEmail() {
+   return email;
+  }
+
+  public void setEmail(String email2) {
+    this.email = email2;
+  }
+
+  public String getUsername() {
+   return username;
+  }
+  
+  public void setUsername(String username2) {
+    this.username = username2;
+  }
+
   // public void setUsername(String username2) {
   //   this.username = username2;
   // }
