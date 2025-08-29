@@ -30,14 +30,27 @@ public class UserService {
 
   public User updateUser(Long id, User data) {
     User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Data not found!"));
-    System.out.println("updateings");
+    System.out.print("updateings" + user);
     user.username = data.username;
     user.email = data.email;
-    return userRepository.save(user);
+
+    User updatedUser = userRepository.save(user);
+    System.out.print("updated: " + updatedUser);
+    return updatedUser;
   }
 
-  public void deleteUser(Long id) {
+  public Boolean deleteUser(Long id) {
+    if(!userRepository.existsById(id)) {
+      throw new IllegalArgumentException("User not found with id: " + id);
+    }
     userRepository.deleteById(id);
+
+    if(!userRepository.existsById(id)) {
+      System.out.println("deleted");
+      return true;
+    } else {
+      return false;
+    }
   }
 
   // public UserDto getUserByIdDTO (Long id) {

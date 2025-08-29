@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import com.collabify.app.dto.UserDto;
@@ -40,9 +41,25 @@ public class UserGraphQLController {
     User user = new User();
     user.setUsername(input.getUsername());
     user.setEmail(input.getEmail());
-    // User created = userService.createUser(input)
-    // return userService.getUserById((long) 4);
-    
     return userService.createUser(input);
+  }
+
+  @MutationMapping
+  public User updateUser(@Valid @Argument Long id, @Argument("input") User input) {
+    System.out.print("update ");
+    Assert.assertNotNull(id, "ID is required");
+    User userToUpdate = userService.getUserById(id);
+    if(userToUpdate == null) {
+      throw new IllegalArgumentException("User not found with id: " + id);
+    }
+    if (input.getUsername() != null) userToUpdate.setUsername(input.username);
+    if (input.getEmail() != null) userToUpdate.setEmail(input.email);
+    return userService.updateUser(id, userToUpdate);
+  }
+
+  @MutationMapping
+  public Boolean deleteUser(@Argument Long id) {
+    Assert.assertNotNull(id, "ID is required");
+    return userService.deleteUser(id);
   }
 }
