@@ -1,22 +1,7 @@
 type Query {
-  user(id: ID!): User
-  users: [User!]!
+  _ping: String
 }
 
-type User {
-  id: ID!
-  username: String!
-  email: String!
-}
-
-input UserInput {
-  username: String!
-  email: String!
-}
-
-
-type Mutation { 
-  createUser(input: UserInput!): User!
-  updateUser(id: ID!, input: UserInput): User!
-  deleteUser(id: ID!): Boolean!
+type Mutation {
+  _noop: Boolean
 }

@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import com.collabify.app.dto.UserDto;
+import com.collabify.app.dto.UserRequest;
+import com.collabify.app.dto.UserResponse;
 import com.collabify.app.model.User;
 import com.collabify.app.service.UserService;
 
@@ -22,6 +24,9 @@ public class UserGraphQLController {
   private UserService userService;
   // Explicitly bind to the schema field name: `user`
 
+  public UserGraphQLController(UserService userService) {
+    this.userService = userService;
+  }
   
   @QueryMapping
   public User user(@Argument("id") Long id) {
@@ -36,25 +41,30 @@ public class UserGraphQLController {
   }
 
   @MutationMapping
-  public User createUser(@Valid @Argument("input") User input ) {
-    System.out.print("asd " + input);
-    User user = new User();
-    user.setUsername(input.getUsername());
-    user.setEmail(input.getEmail());
+  public UserResponse createUser(@Valid @Argument("input") UserRequest input ) {
+    // System.out.print("asd " + input);
+    // User user = new User();
+    // user.setUsername(input.getUsername());
+    // user.setEmail(input.getEmail());
     return userService.createUser(input);
   }
 
+  // @MutationMapping
+  // public User updateUser(@Valid @Argument Long id, @Argument("input") User input) {
+  //   System.out.print("update ");
+  //   Assert.assertNotNull(id, "ID is required");
+  //   User userToUpdate = userService.getUserById(id);
+  //   if(userToUpdate == null) {
+  //     throw new IllegalArgumentException("User not found with id: " + id);
+  //   }
+  //   if (input.getUsername() != null) userToUpdate.setUsername(input.username);
+  //   if (input.getEmail() != null) userToUpdate.setEmail(input.email);
+  //   return userService.updateUser(id, userToUpdate);
+  // }
+
   @MutationMapping
-  public User updateUser(@Valid @Argument Long id, @Argument("input") User input) {
-    System.out.print("update ");
-    Assert.assertNotNull(id, "ID is required");
-    User userToUpdate = userService.getUserById(id);
-    if(userToUpdate == null) {
-      throw new IllegalArgumentException("User not found with id: " + id);
-    }
-    if (input.getUsername() != null) userToUpdate.setUsername(input.username);
-    if (input.getEmail() != null) userToUpdate.setEmail(input.email);
-    return userService.updateUser(id, userToUpdate);
+  public UserResponse updateUser(@Argument Long id, @Argument UserRequest input) {
+    return userService.updateUser(id, input);
   }
 
   @MutationMapping

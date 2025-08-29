@@ -1,10 +1,14 @@
+// src/main/java/com/example/user/web/dto/UserSummary.java
 package com.collabify.app.dto;
 
-import jakarta.validation.constraints.NotNull;
-
 public class UserDto {
-  public String id;
-  public String username;
-  public String email;
-  // private String password;
+  private final Long id;
+  private final String username;
+
+  public UserDto(Long id, String username) {
+    this.id = id;
+    this.username = username;
+  }
+  public Long getId() { return id; }
+  public String getUsername() { return username; }
 }
