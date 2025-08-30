@@ -1,16 +1,23 @@
-// package com.collabify.app.service;
+package com.collabify.app.service;
 
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.stereotype.Service;
+import java.util.List;
 
-// import com.collabify.app.repository.TodoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-// @Service
-// public class TodoService {
-//   @Autowired
-//   private TodoRepository todoRepository;
+import com.collabify.app.model.Todo;
+import com.collabify.app.repository.TodoRepository;
 
-//   public List<Todo> listTodos() {
-    
-//   }
-// }
+@Service
+public class TodoService {
+  @Autowired
+  private TodoRepository todoRepository;
+
+  public TodoService(TodoRepository todoRepository) {
+    this.todoRepository = todoRepository;
+  }
+
+  public List<Todo> listTodos() {
+    return todoRepository.findAll();
+  }
+}
