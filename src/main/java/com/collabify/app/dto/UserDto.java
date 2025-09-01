@@ -9,6 +9,6 @@ public class UserDto {
     this.id = id;
     this.username = username;
   }
-  public Long getId() { return id; }
-  public String getUsername() { return username; }
+  // public Long getId() { return id; }
+  // public String getUsername() { return username; }
 }

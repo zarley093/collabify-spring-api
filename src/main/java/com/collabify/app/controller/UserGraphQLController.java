@@ -27,19 +27,19 @@ public class UserGraphQLController {
   public UserGraphQLController(UserService userService) {
     this.userService = userService;
   }
-  
-  @QueryMapping
-  public User user(@Argument("id") Long id) {
-    Assert.assertNotNull(id, "id must not be null");
-    return userService.getUserById(id);
-  }
 
   // Explicitly bind to the schema field name: `users`
   @QueryMapping
   public List<User> users() {
     return userService.listUsers();
   }
-
+  
+  @QueryMapping
+  public User user(@Argument("id") Long id) {
+    Assert.assertNotNull(id, "id must not be null");
+    return userService.getUserById(id);
+  }
+  
   @MutationMapping
   public UserResponse createUser(@Valid @Argument("input") UserRequest input ) {
     // System.out.print("asd " + input);
