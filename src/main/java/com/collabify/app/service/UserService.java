@@ -5,16 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.collabify.app.dto.user.UserDto;
 import com.collabify.app.dto.user.UserRequest;
 import com.collabify.app.dto.user.UserResponse;
 import com.collabify.app.model.User;
 import com.collabify.app.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
-
-// import graphql.com.google.common.base.Optional;
-import java.util.Optional;
 @Service
 public class UserService {
   

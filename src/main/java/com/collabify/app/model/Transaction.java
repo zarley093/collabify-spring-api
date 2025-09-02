@@ -23,12 +23,16 @@ public class Transaction {
   private Instant timestamp;
 
   @ManyToOne
-  @JoinColumn(name = "fromAccountId")
+  @JoinColumn(name = "from_account_id")
   private Account fromAccount;
 
   @ManyToOne
-  @JoinColumn(name = "toAccountId")
+  @JoinColumn(name = "to_account_id")
   private Account toAccount;
+
+  public Long getId() {
+    return id;
+  }
 
   public void setType(String type) {
    this.type = type;

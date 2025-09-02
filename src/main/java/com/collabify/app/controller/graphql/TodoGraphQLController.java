@@ -1,4 +1,4 @@
-package com.collabify.app.controller;
+package com.collabify.app.controller.graphql;
 
 import java.util.List;
 
