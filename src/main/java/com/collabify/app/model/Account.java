@@ -33,6 +33,14 @@ public class Account {
   @OneToMany(mappedBy = "toAccount", cascade = CascadeType.ALL)
   private List<Transaction> incomingTransactions = new ArrayList<>();
 
+  public Double getBalance() {
+    return balance;
+  }
+
+  public void setBalance(Double newBalance) {
+    this.balance = newBalance;
+  }
+
 
   
   

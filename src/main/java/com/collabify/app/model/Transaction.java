@@ -30,4 +30,39 @@ public class Transaction {
   @JoinColumn(name = "toAccountId")
   private Account toAccount;
 
+  public void setType(String type) {
+   this.type = type;
+  }
+  public String getType() {
+    return type;
+  }
+
+  public void setAmount(Double amount) {
+    this.amount = amount;
+  }
+  public Double getAmount() {
+    return amount;
+  }
+
+  public void setFromAccount(Account fromAccount) {
+    this.fromAccount = fromAccount;
+  }
+  public Account getFromAccount() {
+    return fromAccount;
+  }
+
+  public void setToAccount(Account toAccount) {
+    this.toAccount = toAccount;
+  }
+  public Account getToAccount() {
+    return toAccount;
+  }
+
+  public void setTimestamp(Instant timestamp) {
+    this.timestamp = timestamp;
+  }
+  public Instant getTimestamp() {
+    return timestamp;
+  }
+
 } 
