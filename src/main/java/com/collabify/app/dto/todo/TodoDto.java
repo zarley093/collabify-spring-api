@@ -1,4 +1,4 @@
-package com.collabify.app.dto;
+package com.collabify.app.dto.todo;
 
 public class TodoDto {
   private final Long id;

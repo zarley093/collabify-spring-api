@@ -17,11 +17,15 @@ public class Transaction {
   private Long id;
 
   private Double amount;
+
   private String type; // e.g., "TRANSFER", "DEPOSIT", "WITHDRAWAL"
+
   private Instant timestamp;
+
   @ManyToOne
   @JoinColumn(name = "fromAccountId")
   private Account fromAccount;
+
   @ManyToOne
   @JoinColumn(name = "toAccountId")
   private Account toAccount;

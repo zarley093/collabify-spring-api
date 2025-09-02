@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.collabify.app.dto.todo.TodoRequest;
+import com.collabify.app.dto.todo.TodoResponse;
 import com.collabify.app.model.Todo;
 import com.collabify.app.repository.TodoRepository;
-import com.collabify.app.dto.TodoRequest;
-import com.collabify.app.dto.TodoResponse;
 
 import jakarta.transaction.Transactional;
 

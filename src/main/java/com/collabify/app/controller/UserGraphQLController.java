@@ -9,9 +9,9 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
-import com.collabify.app.dto.UserDto;
-import com.collabify.app.dto.UserRequest;
-import com.collabify.app.dto.UserResponse;
+import com.collabify.app.dto.user.UserDto;
+import com.collabify.app.dto.user.UserRequest;
+import com.collabify.app.dto.user.UserResponse;
 import com.collabify.app.model.User;
 import com.collabify.app.service.UserService;
 

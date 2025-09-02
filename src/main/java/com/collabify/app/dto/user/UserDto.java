@@ -1,5 +1,5 @@
 // src/main/java/com/example/user/web/dto/UserSummary.java
-package com.collabify.app.dto;
+package com.collabify.app.dto.user;
 
 public class UserDto {
   private final Long id;

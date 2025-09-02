@@ -1,4 +1,4 @@
-package com.collabify.app.dto;
+package com.collabify.app.dto.todo;
 
 import com.collabify.app.model.Todo;
 

@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.collabify.app.dto.UserDto;
-import com.collabify.app.dto.UserRequest;
-import com.collabify.app.dto.UserResponse;
+import com.collabify.app.dto.user.UserDto;
+import com.collabify.app.dto.user.UserRequest;
+import com.collabify.app.dto.user.UserResponse;
 import com.collabify.app.model.User;
 import com.collabify.app.repository.UserRepository;
 

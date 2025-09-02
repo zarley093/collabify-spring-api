@@ -1,4 +1,4 @@
-package com.collabify.app.dto;
+package com.collabify.app.dto.user;
 
 import com.collabify.app.model.User;
 
