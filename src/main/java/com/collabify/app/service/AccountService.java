@@ -39,22 +39,27 @@ public class AccountService {
     return accountRepository.findById(id).orElseThrow(() -> new IllegalArgumentException());
   }
 
-  // @Transactional
-  // public AccountResponse createAccount(AccountRequest request) {
-  // //   String type,
-  //   // Double balance,
-  //   // User user,
-  //   // List<Transaction> outgoingTransactions,
-  //   // List<Transaction> incomingTransactions
-    
-  //   if(!userRepository.existsById(request.userId())) {
-  //     throw new IllegalArgumentException("User does not exist");
-  //   }
-  //   Account account = new Account(request.type(), request.balance());
-  //   Account accountSaved = accountRepository.save(account);
-  //   return AccountResponse.from(accountSaved);
-  // }
+  @Transactional
+  public AccountResponse createAccount(Long userId, AccountRequest request) {
+    if(!userRepository.existsById(userId)) {
+      throw new IllegalArgumentException("User does not exist");
+    }
+    User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Data not found!"));
 
+    Account account = new Account(request.type(), request.balance(), user);
+    Account accountSaved = accountRepository.save(account);
+    return AccountResponse.from(accountSaved);
+  }
+
+  @Transactional
+  public AccountResponse updateAccountType(Long id, AccountRequest request) {
+    Account account = accountRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Account not found"));
+    if (!accountRepository.checkValidAccountType(request.type())) {
+      throw new IllegalArgumentException("Invalid Account Type");
+    }
+    account.setType(request.type());
+    return AccountResponse.from(account);
+  }
 
   @Transactional
   public Transaction transfer(Long fromAccountId, Long toAccountId, Double amount) {
@@ -73,13 +78,23 @@ public class AccountService {
     accountRepository.save(fromAccount);
     accountRepository.save(toAccount);
 
-    // Record transaction
-    Transaction trx = new Transaction();
-    trx.setType("TRANSFER");
-    trx.setAmount(amount);
-    trx.setFromAccount(fromAccount);
-    trx.setToAccount(toAccount);
-    trx.setTimestamp(Instant.now());
-    return transactionRepository.save(trx);
+    // Record transaction -- the transaction entity, not the transaction sequence
+    Transaction transaction = new Transaction();
+    transaction.setType("TRANSFER");
+    transaction.setAmount(amount);
+    transaction.setFromAccount(fromAccount);
+    transaction.setToAccount(toAccount);
+    transaction.setTimestamp(Instant.now());
+    return transactionRepository.save(transaction);
   }
+
+  @Transactional
+  public void deleteAccount(Long accountId) {
+    if(!accountRepository.existsById(accountId)) {
+      throw new IllegalArgumentException("User not found with ID: " + accountId);
+    }
+    accountRepository.deleteById(accountId);
+  }
+
+
 }

@@ -12,7 +12,6 @@ import jakarta.persistence.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
-
 @Entity
 public class Account {
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,9 +32,10 @@ public class Account {
   @OneToMany(mappedBy = "toAccount", cascade = CascadeType.ALL)
   private List<Transaction> incomingTransactions = new ArrayList<>();
 
-  public Account(String type, Double balance, Long userId) {
+  public Account(String type, Double balance, User user) {
     this.type = type;
     this.balance = balance;
+    this.user = user;
   }
 
   public Long getId() {
@@ -44,6 +44,10 @@ public class Account {
 
   public String getType() {
     return type;
+  }
+
+   public void setType(String newType) {
+    this.type = newType;
   }
 
   public Double getBalance() {
@@ -64,6 +68,6 @@ public class Account {
   public List<Transaction> getIncomingTransactions() {
     return incomingTransactions;
   }
-  
-  
+ 
+
 }
