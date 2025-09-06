@@ -14,6 +14,7 @@ import com.collabify.app.service.AccountService;
 
 import jakarta.validation.Valid;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -59,5 +60,11 @@ public class AccountController {
     } else {
       return ResponseEntity.notFound().build();
     }
+  }
+
+  @DeleteMapping("/delete-account/{accountId}") 
+  public ResponseEntity<Void> delete(@PathVariable Long accountId) {
+    accountService.deleteAccount(accountId);
+    return null;
   }
 }
