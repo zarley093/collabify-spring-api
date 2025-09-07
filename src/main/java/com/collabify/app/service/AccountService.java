@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.collabify.app.dto.account.AccountRequest;
 import com.collabify.app.dto.account.AccountResponse;
+import com.collabify.app.dto.transaction.TransactionResponse;
 import com.collabify.app.model.Account;
 import com.collabify.app.model.Transaction;
 import com.collabify.app.model.User;
@@ -62,12 +63,12 @@ public class AccountService {
   }
 
   @Transactional
-  public Transaction transfer(Long fromAccountId, Long toAccountId, Double amount) {
-    Account fromAccount = accountRepository.findById(fromAccountId).orElseThrow(() -> new IllegalArgumentException("User not found"));
-    Account toAccount = accountRepository.findById(fromAccountId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+  public TransactionResponse transfer(Long fromAccountId, Long toAccountId, Double amount) {
+    Account fromAccount = accountRepository.findById(fromAccountId).orElseThrow(() -> new IllegalArgumentException("From account not found"));
+    Account toAccount = accountRepository.findById(toAccountId).orElseThrow(() -> new IllegalArgumentException("To account not found"));
 
     if (fromAccount.getBalance() < amount) {
-      throw new IllegalArgumentException("User not found");
+      throw new IllegalArgumentException("Insufficient funds");
     }
 
     // Deduct and add balances
@@ -85,7 +86,8 @@ public class AccountService {
     transaction.setFromAccount(fromAccount);
     transaction.setToAccount(toAccount);
     transaction.setTimestamp(Instant.now());
-    return transactionRepository.save(transaction);
+    Transaction transactionSaved = transactionRepository.save(transaction);
+    return TransactionResponse.from(transactionSaved);
   }
 
   @Transactional

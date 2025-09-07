@@ -52,7 +52,7 @@ public class AccountController {
     }
   }
 
-  @PostMapping("/update-type/{accountId}")
+  @PutMapping("/update-type/{accountId}")
   public ResponseEntity<Account>  updateAccountType(@PathVariable Long accountId, @Valid @RequestBody AccountRequest data) {
     Account account = accountService.getAccountById(accountId);
     if (account != null) { 
