@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.collabify.app.dto.account.AccountRequest;
 import com.collabify.app.dto.account.AccountResponse;
 import com.collabify.app.dto.transaction.TransactionResponse;
+import com.collabify.app.exception.ResourceNotFoundException;
 import com.collabify.app.model.Account;
 import com.collabify.app.model.Transaction;
 import com.collabify.app.model.User;

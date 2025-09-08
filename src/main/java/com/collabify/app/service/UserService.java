@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.collabify.app.dto.user.UserRequest;
 import com.collabify.app.dto.user.UserResponse;
+import com.collabify.app.exception.ResourceNotFoundException;
 import com.collabify.app.model.User;
 import com.collabify.app.repository.UserRepository;
 
@@ -28,7 +29,7 @@ public class UserService {
   @Transactional
   public UserResponse createUser(UserRequest request) {
     if (userRepository.existsByEmail(request.email())) {
-      throw new IllegalArgumentException("Email already in use");
+      throw new ResourceNotFoundException("Email already in use");
     }
     User user = new User(request.username(), request.email());
     User saved = userRepository.save(user);
@@ -36,12 +37,12 @@ public class UserService {
   }
 
   public User getUserById(Long id) {
-    return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Data not found!"));
+    return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Data not found!"));
   }
 
   // public User updateUser(Long id, User data) {
   //   User user = new User();
-  //   User userFound = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Data not found!"));
+  //   User userFound = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Data not found!"));
   //   System.out.print("updateings" + user);
   //   userFound.username = userContructor.username;
   //   userFound.email = userContructor.email;
@@ -53,9 +54,9 @@ public class UserService {
   @Transactional
   public UserResponse updateUser(Long id, UserRequest request) {
     User user = userRepository.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     if (!user.getEmail().equals(request.email()) && userRepository.existsByEmail(request.email())) {
-      throw new IllegalArgumentException("Email already in use");
+      throw new ResourceNotFoundException("Email already in use");
     }
     user.setUsername(request.username());
     user.setEmail(request.email());
@@ -65,7 +66,7 @@ public class UserService {
 
   public Boolean deleteUser(Long id) {
     if(!userRepository.existsById(id)) {
-      throw new IllegalArgumentException("User not found with id: " + id);
+      throw new ResourceNotFoundException("User not found with id: " + id);
     }
     userRepository.deleteById(id);
 
