@@ -32,10 +32,23 @@ public class Account {
   @OneToMany(mappedBy = "toAccount", cascade = CascadeType.ALL)
   private List<Transaction> incomingTransactions = new ArrayList<>();
 
+  // JPA requires a no-args constructor
+  protected Account() {}
+
+  // Convenience constructor used in services 
   public Account(String type, Double balance, User user) {
     this.type = type;
     this.balance = balance;
     this.user = user;
+  }
+
+  // Officially "Public" constructor used for gets/shows 
+  public Account(String type, Double balance, User user, List<Transaction> outgoingTransactions, List<Transaction> incomingTransactions) {
+    this.type = type;
+    this.balance = balance;
+    this.user = user;
+    this.outgoingTransactions = outgoingTransactions;
+    this.incomingTransactions = incomingTransactions;
   }
 
   public Long getId() {

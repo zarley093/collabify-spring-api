@@ -53,10 +53,11 @@ public class AccountController {
   }
 
   @PutMapping("/update-type/{accountId}")
-  public ResponseEntity<Account>  updateAccountType(@PathVariable Long accountId, @Valid @RequestBody AccountRequest data) {
+  public ResponseEntity<AccountResponse>  updateAccountType(@PathVariable Long accountId, @Valid @RequestBody AccountRequest data) {
     Account account = accountService.getAccountById(accountId);
-    if (account != null) { 
-      return ResponseEntity.ok(account);
+    if (account != null) {
+      AccountResponse accountUpdated = accountService.updateAccountType(accountId, data); 
+      return ResponseEntity.status(201).body(accountUpdated);
     } else {
       return ResponseEntity.notFound().build();
     }

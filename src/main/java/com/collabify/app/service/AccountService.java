@@ -37,15 +37,15 @@ public class AccountService {
     return accountRepository.findAll();
   }
   public Account getAccountById(Long id) {
-    return accountRepository.findById(id).orElseThrow(() -> new IllegalArgumentException());
+    return accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account not found!"));
   }
 
   @Transactional
   public AccountResponse createAccount(Long userId, AccountRequest request) {
     if(!userRepository.existsById(userId)) {
-      throw new IllegalArgumentException("User does not exist");
+      throw new ResourceNotFoundException("User does not exist");
     }
-    User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Data not found!"));
+    User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Data not found!"));
 
     Account account = new Account(request.type(), request.balance(), user);
     Account accountSaved = accountRepository.save(account);
@@ -54,21 +54,22 @@ public class AccountService {
 
   @Transactional
   public AccountResponse updateAccountType(Long id, AccountRequest request) {
-    Account account = accountRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Account not found"));
+    Account account = accountRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account not found"));
     if (!accountRepository.checkValidAccountType(request.type())) {
-      throw new IllegalArgumentException("Invalid Account Type");
+      throw new ResourceNotFoundException("Invalid Account Type");
     }
+    System.out.println("request" + request.type());
     account.setType(request.type());
     return AccountResponse.from(account);
   }
 
   @Transactional
   public TransactionResponse transfer(Long fromAccountId, Long toAccountId, Double amount) {
-    Account fromAccount = accountRepository.findById(fromAccountId).orElseThrow(() -> new IllegalArgumentException("From account not found"));
-    Account toAccount = accountRepository.findById(toAccountId).orElseThrow(() -> new IllegalArgumentException("To account not found"));
+    Account fromAccount = accountRepository.findById(fromAccountId).orElseThrow(() -> new ResourceNotFoundException("From account not found"));
+    Account toAccount = accountRepository.findById(toAccountId).orElseThrow(() -> new ResourceNotFoundException("To account not found"));
 
     if (fromAccount.getBalance() < amount) {
-      throw new IllegalArgumentException("Insufficient funds");
+      throw new ResourceNotFoundException("Insufficient funds");
     }
 
     // Deduct and add balances
@@ -93,7 +94,7 @@ public class AccountService {
   @Transactional
   public void deleteAccount(Long accountId) {
     if(!accountRepository.existsById(accountId)) {
-      throw new IllegalArgumentException("User not found with ID: " + accountId);
+      throw new ResourceNotFoundException("User not found with ID: " + accountId);
     }
     accountRepository.deleteById(accountId);
   }
