@@ -33,14 +33,31 @@ public class BankingController {
   @Autowired TransactionService transactionService;
 
   @PostMapping("/transactions/transfer")
-  public ResponseEntity<TransactionResponse> transfer(@RequestParam Long fromAccountId, @RequestParam Long toAccountId, @RequestParam double amount) {
+  public ResponseEntity<TransactionResponse> transfer(
+    @RequestParam Long fromAccountId, 
+    @RequestParam Long toAccountId, 
+    @RequestParam double amount
+  ) {
     TransactionResponse transactionCreated = accountService.transfer(fromAccountId, toAccountId, amount);
     return ResponseEntity.status(201).body(transactionCreated);
   }
 
+  @GetMapping("/transactions")
+  public List<TransactionResponse> getTransactionsFromAccountId() {
+    return transactionService
+      .listTransactions()
+      .stream()
+      .map(TransactionResponse::from)
+      .toList();
+  }
+
   @GetMapping("/accounts/{accountId}/transactions")
-  public List<Transaction> getTransactionsFromAccountId(@PathVariable Long accountId) {
+  public List<TransactionResponse> getTransactionsFromAccountId(@PathVariable Long accountId) {
     Account accountFrom = accountService.getAccountById(accountId);
-    return transactionService.listAccountTransactions(accountFrom);
+    return transactionService
+      .listAccountTransactions(accountFrom)
+      .stream()
+      .map(TransactionResponse::from)
+      .toList();
   }
 }

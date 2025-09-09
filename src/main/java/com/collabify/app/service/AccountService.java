@@ -99,6 +99,4 @@ public class AccountService {
     }
     accountRepository.deleteById(accountId);
   }
-
-
 }

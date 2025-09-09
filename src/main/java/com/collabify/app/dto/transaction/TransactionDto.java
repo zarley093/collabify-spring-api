@@ -8,22 +8,15 @@ public class TransactionDto {
   private final Long id;
   private final String type;
   private final Instant timestamp;
-  private final Account fromAccount;
-  private final Account toAccount;
 
   public TransactionDto(
     Long id, 
     String type, 
-    Instant timestamp, 
-    Account fromAccount,
-    Account toAccount
+    Instant timestamp 
   ) {
     this.id = id;
     this.type = type;
     this.timestamp = timestamp;
-    this.fromAccount = fromAccount;
-    this.toAccount = toAccount;
-
   }
   // public Long getId() { return id; }
   // public String getUsername() { return username; }

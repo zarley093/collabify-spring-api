@@ -32,8 +32,12 @@ public class AccountController {
   private AccountService accountService;
 
   @GetMapping("/")
-  public List<Account> getAccounts() {
-    return accountService.listAccounts();
+  public List<AccountResponse> getAccounts() {
+    return accountService
+      .listAccounts()
+      .stream()
+      .map(AccountResponse::from)
+      .toList();
   }
 
   @PostMapping("/create/{userId}")
@@ -43,10 +47,10 @@ public class AccountController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Account> showAccount(@PathVariable Long id) {
+  public ResponseEntity<AccountResponse> showAccount(@PathVariable Long id) {
     Account account = accountService.getAccountById(id);
-    if (account != null) { 
-      return ResponseEntity.ok(account);
+    if (account != null) {
+      return ResponseEntity.ok(AccountResponse.from(account));
     } else {
       return ResponseEntity.notFound().build();
     }
