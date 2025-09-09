@@ -3,6 +3,7 @@ package com.collabify.app.service;
 import java.time.Instant;
 import java.util.List;
 
+// import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import com.collabify.app.dto.account.AccountRequest;
 import com.collabify.app.dto.account.AccountResponse;
 import com.collabify.app.dto.transaction.TransactionResponse;
 import com.collabify.app.exception.ResourceNotFoundException;
+import com.collabify.app.exception.BadRequestException;
 import com.collabify.app.model.Account;
 import com.collabify.app.model.Transaction;
 import com.collabify.app.model.User;
@@ -70,7 +72,7 @@ public class AccountService {
     Account toAccount = accountRepository.findById(toAccountId).orElseThrow(() -> new ResourceNotFoundException("To account not found"));
 
     if (fromAccount.getBalance() < amount) {
-      throw new ResourceNotFoundException("Insufficient funds");
+      throw new BadRequestException("Insufficient funds");
     }
 
     // Deduct and add balances
@@ -90,6 +92,30 @@ public class AccountService {
     transaction.setTimestamp(Instant.now());
     Transaction transactionSaved = transactionRepository.save(transaction);
     return TransactionResponse.from(transactionSaved);
+  }
+
+  @Transactional
+  public AccountResponse deposit(Long accountId, Double amount) {
+    Account account = accountRepository.findById(accountId).orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+    
+    account.setBalance(account.getBalance() + amount);
+    Account accountSaved = accountRepository.save(account);
+
+    return AccountResponse.from(accountSaved);
+  }
+  
+  @Transactional
+  public AccountResponse withdraw(Long accountId, Double amount) {
+    Account account = accountRepository.findById(accountId).orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+
+    if (account.getBalance() <= 0 || account.getBalance() < amount) {
+      throw new BadRequestException("Insufficient Funds");
+    }
+
+    account.setBalance(account.getBalance() - amount);
+    Account accountSaved = accountRepository.save(account);
+
+    return AccountResponse.from(accountSaved);
   }
 
   @Transactional

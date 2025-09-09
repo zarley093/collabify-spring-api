@@ -1,0 +1,34 @@
+type Account {
+  id: ID!
+  type: String!
+  balance: Float!
+  user: User!
+  transactions: [Transaction!]!  # all transactions involving this account
+}
+
+type Transaction {
+  id: ID!
+  type: String!
+  amount: Float!
+  timestamp: String!
+  fromAccount: Account
+  toAccount: Account
+}
+
+type BankTransaction {
+  accountId: ID!
+  amount: Float!
+}
+
+extend type Query {
+  accountById(id: ID!): Account
+  transactionsByAccount(accountId: ID!): [Transaction!]!
+}
+
+extend type Mutation {
+  openAccount(userId: ID!, type: String!, balance: Float!): Account!
+  updateAccountType(accountId: ID!, type: String!): Account!
+  transferFunds(fromAccountId: ID!, toAccountId: ID!, amount: Float!): Transaction!
+  deposit(accountId: ID!, amount: Float!): Account!
+  withdraw(accountId: ID!, amount: Float!): Account!
+}
