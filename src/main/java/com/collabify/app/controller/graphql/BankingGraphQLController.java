@@ -17,7 +17,6 @@ import com.collabify.app.model.User;
 import com.collabify.app.dto.account.AccountRequest;
 import com.collabify.app.dto.account.AccountResponse;
 import com.collabify.app.dto.transaction.TransactionResponse;
-import com.collabify.app.dto.banking.BankTransactionDto;
 import com.collabify.app.service.AccountService;
 import com.collabify.app.service.TransactionService;
 
@@ -25,11 +24,6 @@ import com.collabify.app.service.TransactionService;
 public class BankingGraphQLController {
   @Autowired AccountService accountService;
   @Autowired TransactionService transactionService;
-
-  @QueryMapping
-  public Account accountById(@Argument Long id) {
-    return accountService.getAccountById(id);
-  }
 
   // Resolver for Account.transactions
   @SchemaMapping(typeName = "Account", field = "transactions")
@@ -46,6 +40,18 @@ public class BankingGraphQLController {
     return account.getAccountUser();
   }
 
+  // Coerce Transaction.timestamp Instant -> String to match schema
+  @SchemaMapping(typeName = "Transaction", field = "timestamp")
+  public String timestamp(Transaction transaction) {
+    Instant ts = transaction.getTimestamp();
+    return ts != null ? ts.toString() : null;
+  }
+
+  @QueryMapping
+  public Account accountById(@Argument Long id) {
+    return accountService.getAccountById(id);
+  }
+
   @QueryMapping
   public List<Transaction> transactionsByAccount(@Argument Long accountId) {
     Account account = accountService.getAccountById(accountId);
@@ -53,13 +59,6 @@ public class BankingGraphQLController {
         account.getOutgoingTransactions().stream(),
         account.getIncomingTransactions().stream())
       .toList();
-  }
-
-  // Coerce Transaction.timestamp Instant -> String to match schema
-  @SchemaMapping(typeName = "Transaction", field = "timestamp")
-  public String timestamp(Transaction transaction) {
-    Instant ts = transaction.getTimestamp();
-    return ts != null ? ts.toString() : null;
   }
 
   // Mutations
@@ -84,13 +83,13 @@ public class BankingGraphQLController {
   }
 
   @MutationMapping
-  public BankTransactionDto deposit(@Argument Long accountId, @Argument Double amount) {
-    accountService.deposit(accountId, amount);
-    return new BankTransactionDto(accountId, amount);
+  public Account deposit(@Argument Long accountId, @Argument Double amount) {
+    AccountResponse updated = accountService.deposit(accountId, amount);
+    return accountService.getAccountById(updated.id());
   }
   @MutationMapping
-  public BankTransactionDto withdraw(@Argument Long accountId, @Argument Double amount) {
-    accountService.withdraw(accountId, amount);
-    return new BankTransactionDto(accountId, amount);
+  public Account withdraw(@Argument Long accountId, @Argument Double amount) {
+    AccountResponse updated = accountService.withdraw(accountId, amount);
+    return accountService.getAccountById(updated.id());
   }
 }
